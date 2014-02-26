@@ -47,6 +47,7 @@ const bool ENCODER_EVENT_B = false;
 
 class Encoder{
 	private:
+	    // vars are volatile bc they are used in an ISR
 		volatile double speed; // wheel speed
 		volatile int count; // encoder count
 		volatile int lastTime; // last calculation time

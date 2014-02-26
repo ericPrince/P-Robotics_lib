@@ -19,6 +19,8 @@
 	the setpoint without overshooting, then tune I.  Often D
 	is not needed, but also is often negative to resist large
 	changes in input readings (which can be due to noise)
+	The formula used assumes that the D constant is negative by
+	default, so specify a positive value to achieve this behavior
 
 ----------------------------------------------------------------*/
 
@@ -47,6 +49,6 @@ class PID {
 		
 		// used by constructors
 		void init(double p, double i, double d, double lo, double hi);
-}
+};
 
 #endif

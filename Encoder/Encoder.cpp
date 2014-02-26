@@ -48,12 +48,16 @@ int Encoder::getDirection(){
 
 void Encoder::encoderEvent(bool mode){
   int temp = millis();
+  // average recent periods
   double p = ((double)(temp - lastTime));
   double period = (p1+p2+p3+p4+p5+p)/6;
   p5=p4; p4=p3; p3=p2; p2=p1; p1=p;
+  
+  // update times and speeds
   lastTime=temp;
   speed= distancePerCount / period * 1000.0;
   
+  // update count
   if(digitalRead(pinA) == digitalRead(pinB) ^ !invert ^ mode){
     count++;
   }else{

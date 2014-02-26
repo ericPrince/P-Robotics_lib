@@ -44,7 +44,7 @@ double PID::compute(double input, double setPoint, int time) {
 double PID::compute(double error, int time) {
 	compute(error, 0);
 }
-// reset I term
+// reset I term and timing
 void PID::reset() {
 	iTerm=0;
 	lastT=millis();

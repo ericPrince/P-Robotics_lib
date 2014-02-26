@@ -1,6 +1,8 @@
 
 #include <Arduino.h>
 
+#include <HBridge.h>
+
 
 // constructor
 HBridge::HBridge(int pinA, int pinB, int pinPWM, bool invert) {
@@ -31,27 +33,27 @@ void HBridge::setRaw(int direction, int pwm) {
 		// brake mode
 		if (_stopMode == HB_BRAKE) {
 			_pwmSpeed = 255;
-			digitalWrite(pinA, LOW);
-			digitalWrite(pinB, LOW);
+			digitalWrite(_pinA, LOW);
+			digitalWrite(_pinB, LOW);
 		}
 		// coast mode
 		else {
 			_pwmSpeed = 0;
-			digitalWrite(pinA, LOW);
-			digitalWrite(pinB, LOW);
+			digitalWrite(_pinA, LOW);
+			digitalWrite(_pinB, LOW);
 		}
 	}
 	// if instructed to go forward
 	else if(_direction == M_FWD ^ _invert) {
-		digitalWrite(pinA, HIGH);
-		digitalWrite(pinB, LOW);
+		digitalWrite(_pinA, HIGH);
+		digitalWrite(_pinB, LOW);
 	}
 	// if instructed to go backward
 	else {
-		digitalWrite(pinA, LOW);
-		digitalWrite(pinB, HIGH);
+		digitalWrite(_pinA, LOW);
+		digitalWrite(_pinB, HIGH);
 	}
-	analogWrite(pinPWM, _pwmSpeed);
+	analogWrite(_pinPWM, _pwmSpeed);
 }
 // set speed in range [-1, 1]
 void HBridge::setSpeed(double speed) {
@@ -66,11 +68,11 @@ void HBridge::setSpeed(double speed) {
 	}
 }
 // tell the motor to stop
-void stop() {
+void HBridge::stop() {
 	setRaw(M_STOP, 0);
 }
 // assign BRAKE or COAST mode for the H-Bridge
-void setStopMode(int mode) {
+void HBridge::setStopMode(int mode) {
 	_stopMode = mode;
 }
 // get motor direction (1, 0, or -1)
@@ -79,7 +81,7 @@ int HBridge::getDirection() {
 }
 // get motor speed in range [-1, 1]
 int HBridge::getSpeed() {
-	return ((double)pwmSpeed)/255.0 * (double)_direction;
+	return ((double)_pwmSpeed)/255.0 * (double)_direction;
 }	
 // adjust the deadband for the output (as a PWM)
 // only adjust deadband if necessary...
